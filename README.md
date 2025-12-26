@@ -1,4 +1,4 @@
-# Hexo Theme Lofi
+# Lofi
 
 > 极简、纯粹、黑白风格的 Hexo 博客主题。
 
