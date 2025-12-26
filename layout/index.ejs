@@ -1,0 +1,95 @@
+<!-- 
+  Index Page - Single Column List Layout
+  - 顶部个人简介
+  - 单列文章列表 (max-w-7xl)
+  - 分页
+-->
+<main class="max-w-7xl mx-auto px-6 pt-12 pb-24">
+
+  <!-- 个人简介块 (Full Width Hero) -->
+  <div class="border border-black p-8 md:p-12 mb-16 bg-black text-white fade-in-up">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+      <div>
+        <h1 class="text-5xl md:text-8xl font-black tracking-tighter mb-6"><%= config.author %></h1>
+        <p class="text-xl md:text-2xl font-light opacity-90 max-w-2xl leading-relaxed">
+          <%= config.description %>
+        </p>
+      </div>
+      <div class="flex gap-4 flex-wrap">
+        <% if(theme.social.github) { %>
+          <a href="<%= theme.social.github %>" target="_blank" class="px-8 py-3 border border-white hover:bg-white hover:text-black transition-colors uppercase tracking-widest text-sm font-bold">GitHub</a>
+        <% } %>
+        <% if(theme.social.email) { %>
+          <a href="mailto:<%= theme.social.email %>" class="px-8 py-3 border border-white hover:bg-white hover:text-black transition-colors uppercase tracking-widest text-sm font-bold">Email</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <!-- 文章列表 -->
+  <div class="space-y-12">
+    <% page.posts.forEach(function(post, index){ %>
+      <article class="border-b border-black pb-12 fade-in-up" style="animation-delay: <%= index * 100 %>ms">
+        <div class="flex flex-col md:flex-row gap-8 items-baseline">
+           
+           <!-- Meta (Date) -->
+           <div class="w-full md:w-48 flex-shrink-0 text-sm font-mono text-gray-500 uppercase tracking-widest">
+              <%= date(post.date, 'YYYY-MM-DD') %>
+           </div>
+
+           <!-- Content -->
+           <div class="flex-grow">
+              <h2 class="text-3xl md:text-4xl font-bold leading-tight mb-4">
+                <a href="<%- url_for(post.path) %>" class="hover:underline decoration-4 underline-offset-8"><%= post.title %></a>
+              </h2>
+              
+              <!-- Categories & Tags -->
+              <div class="flex flex-wrap gap-4 text-xs font-mono uppercase tracking-widest mb-6">
+                 <% if(post.categories && post.categories.length > 0) { %>
+                    <% post.categories.forEach(function(category, i) { %>
+                        <% if (i === 0) { %>
+                            <a href="<%- url_for(category.path) %>" class="text-black font-bold hover:underline"><%= category.name %></a>
+                        <% } %>
+                    <% }); %>
+                 <% } %>
+                 <% post.tags.slice(0, 10).forEach(function(tag){ %>
+                    <a href="<%- url_for(tag.path) %>" class="text-gray-400 hover:text-black transition-colors">#<%= tag.name %></a>
+                 <% }) %>
+              </div>
+
+              <!-- Excerpt -->
+              <% if(post.excerpt) { %>
+                <div class="text-gray-600 leading-relaxed mb-6 prose max-w-none">
+                    <%- post.excerpt %>
+                </div>
+              <% } %>
+              
+              <a href="<%- url_for(post.path) %>" class="inline-flex items-center gap-2 font-bold uppercase tracking-widest text-sm hover:gap-4 transition-all">
+                阅读文章
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </a>
+           </div>
+
+        </div>
+      </article>
+    <% }) %>
+  </div>
+
+  <!-- Pagination -->
+  <% if (page.total > 1) { %>
+    <div class="flex justify-between items-center mt-24 pt-12 border-t border-black">
+        <div class="text-sm font-mono text-gray-500 uppercase tracking-widest">
+            Page <%= page.current %> of <%= page.total %>
+        </div>
+        <div class="flex gap-4">
+            <% if (page.prev) { %>
+                <a href="<%- url_for(page.prev_link) %>" class="px-8 py-3 border border-black hover:bg-black hover:text-white uppercase tracking-widest text-sm font-bold transition-colors">Previous</a>
+            <% } %>
+            <% if (page.next) { %>
+                <a href="<%- url_for(page.next_link) %>" class="px-8 py-3 border border-black hover:bg-black hover:text-white uppercase tracking-widest text-sm font-bold transition-colors">Next</a>
+            <% } %>
+        </div>
+    </div>
+  <% } %>
+
+</main>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="<%= config.language %>" data-theme="lofi">
+<head>
+  <%- partial('partial/head') %>
+  <script>
+    window.CONFIG = {
+      root: '<%- config.root %>',
+      title: '<%- config.title %>',
+      version: '1.0.0'
+    };
+  </script>
+</head>
+<body class="flex flex-col min-h-screen bg-white text-black antialiased">
+  <%- partial('partial/header') %>
+
+  <!-- PJAX Container -->
+  <!-- Main content area -->
+  <div id="main-container" class="flex-grow w-full fade-in">
+    <%- body %>
+  </div>
+
+  <%- partial('partial/footer') %>
+
+  <!-- Search Modal -->
+  <dialog id="search_modal" class="modal">
+    <div class="modal-box bg-white border border-black rounded-none p-4 md:p-6 w-11/12 max-w-7xl overflow-x-hidden">
+      <h3 class="font-bold text-lg mb-4 uppercase tracking-widest">搜索</h3>
+      <input type="text" id="search-input" placeholder="输入关键词..." class="w-full p-3 border border-black rounded-none focus:outline-none focus:bg-gray-50 text-base md:text-lg font-mono placeholder-gray-400" />
+      <ul id="search-results" class="w-full mt-4 p-0">
+        <!-- Search results will be injected here -->
+      </ul>
+      <div class="modal-action">
+        <form method="dialog">
+          <button class="btn btn-sm btn-outline rounded-none border-black hover:bg-black hover:text-white uppercase">关闭</button>
+        </form>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
+
+  <%- partial('partial/scripts') %>
+</body>
+</html>

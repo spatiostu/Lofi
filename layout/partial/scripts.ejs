@@ -1,0 +1,31 @@
+<!-- Scripts -->
+<% if (theme.cdn && theme.cdn.enable) { %>
+<script src="<%= theme.cdn.url %>js/pjax.min.js"></script>
+<% } else { %>
+<script src="<%- url_for('js/pjax.min.js') %>"></script>
+<% } %>
+
+<!-- JS -->
+<% if (theme.cdn && theme.cdn.enable) { %>
+<script src="<%= theme.cdn.url %>js/main.js"></script>
+<% } else { %>
+<script src="<%- url_for('js/main.js') %>"></script>
+<% } %>
+
+<!-- Artalk (Comment System) -->
+<% if (theme.artalk && theme.artalk.enable) { %>
+    <link href="<%- theme.artalk.css_url || url_for('css/Artalk.css') %>" rel="stylesheet" />
+    <script src="<%- theme.artalk.js_url || url_for('js/Artalk.js') %>"></script>
+<% } %>
+
+<% if (is_post() && theme.artalk && theme.artalk.enable) { %>
+    <script>
+        window.artalkConfig = {
+            server: '<%- theme.artalk.server %>',
+            site: '<%- theme.artalk.site %>',
+            pageKey: '<%= page.path %>',
+            pageTitle: '<%= page.title %>',
+            darkMode: false
+        };
+    </script>
+<% } %>

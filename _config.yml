@@ -1,0 +1,47 @@
+# Header Menu
+menu:
+  首页: /
+  归档: /archives
+  友链: /friends
+  关于: /about
+
+# Content
+excerpt_length: 150
+
+# Profile
+avatar: 
+favicon: /images/favicon.png
+description: "A minimal Hexo theme."
+social:
+  github: https://github.com/yourname
+  email: your-email@domain.com
+
+# CDN Configuration
+cdn:
+  enable: false
+  url: https://res.your-domain.com/
+
+
+
+
+# TOC
+toc:
+  enable: true
+  max_depth: 3
+  
+# Search
+search:
+  enable: true
+
+# Artalk Comment System
+# https://artalk.js.org/
+artalk:
+  enable: false
+  server: 'https://artalk.your-domain.com' 
+  site: 'your-site-name'
+  css_url: '' 
+  js_url: ''
+
+# Footer
+footer:
+  copyright: "© 2024 Your Name"

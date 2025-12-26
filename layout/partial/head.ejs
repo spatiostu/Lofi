@@ -1,0 +1,34 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= page.title ? page.title + ' | ' + config.title : config.title %></title>
+<% if (theme.favicon) { %>
+<link rel="icon" href="<%= theme.favicon %>">
+<% } %>
+<meta name="author" content="<%= config.author %>">
+<meta name="description" content="<%= config.description %>">
+<meta name="keywords" content="<%= config.keywords %>">
+
+<!-- CSS -->
+<% if (theme.cdn && theme.cdn.enable) { %>
+<link rel="stylesheet" href="<%= theme.cdn.url %>css/style.css">
+<% } else { %>
+<link rel="stylesheet" href="<%- url_for('css/style.css') %>">
+<% } %>
+<style>
+  #search_modal .modal-box {
+    overflow-x: hidden;
+  }
+  #search-results,
+  #search-results li,
+  #search-results a {
+    max-width: 100%;
+  }
+  .prose :where(p, li, blockquote, td, th) {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  .prose a {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+</style>

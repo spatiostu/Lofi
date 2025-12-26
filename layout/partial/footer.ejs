@@ -1,0 +1,24 @@
+<footer class="footer py-10 bg-black text-white border-t border-black mt-0">
+  <div class="flex flex-col md:flex-row justify-between items-center md:items-start w-full px-6">
+    <div class="flex flex-col gap-4 items-center md:items-start text-center md:text-left">
+        <h3 class="text-2xl font-black tracking-tighter"><%= config.title %></h3>
+        <p class="text-sm opacity-70 max-w-xs">
+            <%= theme.description %>
+        </p>
+    </div>
+    
+    <div class="flex flex-col items-center md:items-end gap-4 text-center md:text-right mt-8 md:mt-0">
+        <div class="flex gap-4 text-sm font-bold uppercase tracking-widest">
+            <a href="<%- url_for('/feed/') %>" class="hover:underline">RSS</a>
+            <a href="<%- url_for('/archives') %>" class="hover:underline">归档</a>
+            <a href="<%- url_for('/friends') %>" class="hover:underline">友链</a>
+            <% if (theme.menu && (theme.menu['关于'] || theme.menu['About'])) { %>
+                <a href="<%- url_for(theme.menu['关于'] || theme.menu['About']) %>" class="hover:underline">关于</a>
+            <% } %>
+        </div>
+        <p class="text-xs opacity-50 font-mono">
+            © <%= date(new Date(), 'YYYY') %> <%= config.author %>. Powered by Hexo. <a href="https://github.com/spatiostu/lofi" class="hover:underline">Theme Lofi</a>
+        </p>
+    </div>
+  </div>
+</footer>

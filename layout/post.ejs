@@ -1,0 +1,168 @@
+<div class="flex flex-col lg:flex-row min-h-screen">
+  
+  <!-- Sidebar (TOC) - Left Sticky -->
+  <!-- 
+    设计核心：左侧边栏占 25%，右侧内容占 75%。
+    左侧在大屏幕下固定，包含目录。
+  -->
+  <aside class="hidden lg:block w-80 border-r border-black flex-shrink-0 relative bg-gray-50">
+    <div class="sticky top-0 h-screen overflow-y-auto custom-scrollbar flex flex-col">
+       <div class="p-8 border-b border-black bg-white">
+        <a href="<%- url_for('/') %>" class="inline-flex items-center gap-2 border border-black px-4 py-2 text-xs font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-colors group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            Back Home
+        </a>
+      </div>
+
+      <div class="p-8 flex-grow">
+        <h3 class="font-black text-xs uppercase tracking-widest text-gray-400 mb-6 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+            Contents
+        </h3>
+        <div class="toc-wrapper text-sm">
+            <%- toc(page.content, {list_number: false, class: 'toc', max_depth: 3}) %>
+        </div>
+      </div>
+
+      <!-- Share / Meta in Sidebar -->
+      <div class="p-8 border-t border-black bg-white mt-auto">
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <p class="text-[10px] text-gray-400 font-mono mb-1 uppercase tracking-widest">PUBLISHED</p>
+                <p class="font-bold text-xs"><%= date(page.date, 'YYYY-MM-DD') %></p>
+            </div>
+            <div>
+                <p class="text-[10px] text-gray-400 font-mono mb-1 uppercase tracking-widest">CATEGORY</p>
+                <% if(page.categories && page.categories.length > 0) { %>
+                    <a href="<%- url_for(page.categories.data[0].path) %>" class="font-bold text-xs uppercase hover:underline"><%= page.categories.data[0].name %></a>
+                <% } else { %>
+                    <span class="text-xs text-gray-300">N/A</span>
+                <% } %>
+            </div>
+            <div class="col-span-2">
+                <p class="text-[10px] text-gray-400 font-mono mb-1 uppercase tracking-widest">TAGS</p>
+                <div class="flex flex-wrap gap-1">
+                    <% page.tags.forEach(function(tag){ %>
+                        <a href="<%- url_for(tag.path) %>" class="text-xs border border-gray-200 px-1 hover:border-black hover:bg-black hover:text-white transition-colors">#<%= tag.name %></a>
+                    <% }) %>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-grow min-w-0 bg-white">
+    <!-- Mobile Back Button -->
+    <div class="lg:hidden p-4 border-b border-black flex justify-between items-center bg-gray-50 sticky top-0 z-40">
+        <a href="<%- url_for('/') %>" class="text-xs font-bold uppercase tracking-widest flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            Back
+        </a>
+        <button onclick="document.getElementById('mobile-toc-modal').showModal()" class="btn btn-xs btn-outline rounded-none border-black font-normal">
+            目录
+        </button>
+    </div>
+
+    <article class="max-w-6xl mx-auto px-6 py-12 lg:py-24 mt-16 lg:mt-24 fade-in-up">
+      <header class="mb-16 border-b border-black pb-12">
+        <h1 class="text-4xl md:text-6xl font-black mb-6 leading-tight tracking-tight"><%= page.title %></h1>
+        
+        <div class="flex items-center gap-4 text-lg font-mono text-gray-500 uppercase tracking-widest">
+            <span>By <%= config.author %></span>
+            <span>•</span>
+            <span><%= date(page.date, 'MMMM DD, YYYY') %></span>
+            <% if(page.categories && page.categories.length > 0) { %>
+                <span>•</span>
+                <a href="<%- url_for(page.categories.data[0].path) %>" class="hover:text-black hover:underline"><%= page.categories.data[0].name %></a>
+            <% } %>
+        </div>
+      </header>
+      
+      <!-- Typographic Content -->
+      <div class="prose prose-lg max-w-none 
+          prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-black
+          prose-p:text-gray-800 prose-p:leading-relaxed prose-p:mb-6
+          prose-a:text-black prose-a:font-bold prose-a:no-underline prose-a:border-b-2 prose-a:border-black hover:prose-a:bg-black hover:prose-a:text-white prose-a:transition-colors
+          prose-blockquote:border-l-4 prose-blockquote:border-black prose-blockquote:bg-gray-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:not-italic
+          prose-code:bg-gray-100 prose-code:text-black prose-code:px-1 prose-code:py-0.5 prose-code:rounded-none prose-code:before:content-none prose-code:after:content-none
+          prose-pre:bg-black prose-pre:text-white prose-pre:rounded-none prose-pre:border prose-pre:border-black
+          prose-img:rounded-none prose-img:mx-auto
+          prose-ul:list-square
+          prose-li:marker:text-black
+      ">
+        <%- page.content %>
+      </div>
+
+      <!-- Copyright Block -->
+      <div class="mt-24 p-8 border border-black bg-gray-50">
+        <div class="flex flex-col md:flex-row gap-8 items-start justify-between">
+            <div>
+                <h4 class="font-bold text-lg mb-2">许可协议</h4>
+                <p class="text-sm text-gray-600 max-w-md">
+                    本文由 <span class="font-bold"><%= config.author %></span> 原创，采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" class="underline">CC BY-NC-SA 4.0</a> 协议。转载请注明出处。
+                </p>
+            </div>
+            <div class="text-right">
+                <p class="text-xs font-mono text-gray-400 uppercase tracking-widest mb-1">PERMALINK</p>
+                <p class="font-mono text-xs break-all"><%= page.permalink %></p>
+            </div>
+        </div>
+      </div>
+
+      <!-- Footer Nav -->
+    <div class="grid grid-cols-1 md:grid-cols-2 border-t border-black mt-24">
+        <% if(page.prev) { %>
+            <a href="<%- url_for(page.prev.path) %>" class="group py-4 px-6 border-b md:border-b-0 md:border-r border-black hover:bg-black hover:text-white transition-colors relative overflow-hidden">
+                <span class="block text-xs font-mono text-gray-400 group-hover:text-gray-300 uppercase tracking-widest mb-2 z-10 relative">Previous Post</span>
+                <span class="block text-lg font-bold leading-tight z-10 relative"><%= page.prev.title %></span>
+            </a>
+        <% } else { %>
+            <div class="border-b md:border-b-0 md:border-r border-black bg-gray-50"></div>
+        <% } %>
+
+        <% if(page.next) { %>
+            <a href="<%- url_for(page.next.path) %>" class="group py-4 px-6 text-right hover:bg-black hover:text-white transition-colors relative overflow-hidden">
+                <span class="block text-xs font-mono text-gray-400 group-hover:text-gray-300 uppercase tracking-widest mb-2 z-10 relative">Next Post</span>
+                <span class="block text-lg font-bold leading-tight z-10 relative"><%= page.next.title %></span>
+            </a>
+        <% } else { %>
+            <div class="bg-gray-50"></div>
+        <% } %>
+    </div>
+
+      <!-- Artalk Comments -->
+      <% if (theme.artalk && theme.artalk.enable) { %>
+        <div id="Comments" class="mt-16 pt-12 border-t border-black">
+           <h3 class="font-bold text-lg mb-8 uppercase tracking-widest">Comments</h3>
+           <div id="artalk-metadata" 
+                data-page-key="<%= config.url + url_for(page.path) %>" 
+                data-page-title="<%= page.title %>"
+                data-server="<%= theme.artalk.server %>"
+                data-site="<%= theme.artalk.site %>"
+                style="display:none;"></div>
+           <div id="artalk"></div>
+        </div>
+      <% } %>
+    </article>
+  </main>
+</div>
+
+<!-- Mobile TOC Modal -->
+<dialog id="mobile-toc-modal" class="modal">
+  <div class="modal-box bg-white border border-black rounded-none p-6 w-11/12">
+    <h3 class="font-bold text-lg mb-4 uppercase tracking-widest">目录</h3>
+    <div class="toc-wrapper text-sm">
+        <%- toc(page.content, {list_number: false, class: 'toc', max_depth: 3}) %>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-sm btn-outline rounded-none border-black hover:bg-black hover:text-white uppercase">关闭</button>
+      </form>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

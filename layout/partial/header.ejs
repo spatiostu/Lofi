@@ -1,0 +1,54 @@
+<div class="navbar bg-white border-b border-black p-0 h-16 relative z-50 flex flex-row flex-nowrap justify-between items-center w-full">
+  <!-- Logo Section -->
+  <div class="flex-none border-r border-black h-full flex items-center px-6 min-w-[200px]">
+    <a href="<%- url_for('/') %>" class="text-xl font-black tracking-tighter hover:opacity-70 transition-opacity whitespace-nowrap">
+    <%= config.title %>  
+    </a>
+  </div>
+
+  <!-- Desktop Menu -->
+  <div class="hidden lg:flex flex-none h-full ml-auto">
+    <ul class="flex h-full m-0 p-0">
+      <% for (var i in theme.menu){ %>
+        <li class="h-full border-l border-black list-none">
+          <a href="<%- url_for(theme.menu[i]) %>" class="h-full flex items-center px-8 font-bold uppercase tracking-widest text-xs hover:bg-black hover:text-white transition-colors duration-200 focus:bg-black focus:text-white active:bg-black whitespace-nowrap">
+            <%= i %>
+          </a>
+        </li>
+      <% } %>
+      
+      <!-- Search Button -->
+      <li class="h-full border-l border-black list-none">
+        <button onclick="document.getElementById('search_modal').showModal()" aria-label="Search" class="h-full px-6 flex items-center hover:bg-black hover:text-white transition-colors duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+        </button>
+      </li>
+      <!-- RSS -->
+      <li class="h-full border-l border-black list-none">
+        <a href="<%- url_for('/feed/') %>" class="h-full px-6 flex items-center hover:bg-black hover:text-white transition-colors duration-200" aria-label="RSS Feed">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 5c7.18 0 13 5.82 13 13M6 11a7 7 0 017 7m-6 0a1 1 0 11-2 0 1 1 0 012 0z" /></svg>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Mobile Menu Button -->
+  <div class="flex lg:hidden flex-none h-full border-l border-black ml-auto">
+     <div class="dropdown dropdown-end h-full">
+      <label tabindex="0" class="btn btn-ghost rounded-none h-full px-6 hover:bg-black hover:text-white border-none flex items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+      </label>
+      <ul tabindex="0" class="menu dropdown-content mt-0 z-[1] p-0 shadow bg-white border border-black w-[200px] rounded-none right-0 top-full absolute">
+        <% for (var i in theme.menu){ %>
+          <li class="border-b border-black last:border-b-0"><a href="<%- url_for(theme.menu[i]) %>" class="rounded-none py-4 px-6 font-bold uppercase tracking-widest hover:bg-black hover:text-white block text-sm"><%= i %></a></li>
+        <% } %>
+        <!-- Mobile Search -->
+         <li class="border-b border-black last:border-b-0">
+            <button onclick="document.getElementById('search_modal').showModal()" class="rounded-none py-4 px-6 font-bold uppercase tracking-widest hover:bg-black hover:text-white w-full text-left flex gap-2 items-center text-sm">
+                <span>搜索</span>
+            </button>
+         </li>
+      </ul>
+    </div>
+  </div>
+</div>

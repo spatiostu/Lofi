@@ -1,0 +1,200 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-black;
+  }
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #000;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #333;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+  opacity: 0; /* Initially hidden */
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* TOC Styles */
+.toc-wrapper .toc {
+    @apply list-none p-0;
+}
+.toc-wrapper .toc-item {
+    @apply mb-2;
+}
+.toc-wrapper .toc-link {
+    @apply text-gray-500 hover:text-black transition-colors block truncate;
+}
+.toc-wrapper .toc-child {
+    @apply pl-4 mt-1 border-l border-gray-200;
+}
+.toc-wrapper .toc-item.active > .toc-link {
+    @apply text-black font-bold border-l-2 border-black pl-2 -ml-2.5 bg-gray-50;
+}
+
+@layer components {
+  /* Bento Grid */
+  .bento-cell {
+      @apply border-b border-r border-black p-6 flex flex-col justify-between transition-all duration-300 relative overflow-hidden bg-white hover:bg-gray-50;
+      min-height: 120px;
+  }
+  .bento-cell:hover {
+      @apply z-10;
+      box-shadow: 8px 8px 0 0 #000;
+      transform: translate(-4px, -4px);
+  }
+  /* Explicitly handle the black cell hover state to ensure specificty or just let utilities handle static bg */
+  .bento-cell.bg-black {
+      background-color: #000;
+      color: #fff;
+  }
+  .bento-cell.bg-black:hover {
+      background-color: #000;
+      color: #fff;
+      box-shadow: 8px 8px 0 0 #333;
+  }
+  
+  /* Link Wrapping Fix */
+  .prose :where(p, li, blockquote, td, th) {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+  }
+  .prose a {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+  }
+  
+  /* Search Result Fix */
+  #search_modal .modal-box {
+      overflow-x: hidden;
+  }
+  .search-result-item {
+      max-width: 100%;
+      overflow: hidden;
+  }
+  .search-result-item a {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      white-space: normal;
+  }
+}
+
+/* Footer Fix */
+footer {
+    width: 100%;
+}
+
+/* Code Block Enhancements */
+figure.highlight {
+    @apply relative mb-8 rounded-none border border-black bg-gray-50 overflow-hidden;
+    margin-top: 2rem;
+}
+
+/* Friend Card Hover Fix */
+.friend-card {
+    @apply block p-6 border border-black transition-all h-full no-underline;
+    border-bottom-width: 1px !important; /* Override prose-a border-b-2 */
+}
+.friend-card:hover {
+    @apply bg-black text-white;
+}
+.friend-card:hover * {
+    color: white !important;
+    opacity: 1 !important;
+    border-color: white !important; /* Ensure borders inside also turn white if needed */
+}
+
+figure.highlight table {
+    @apply border-0 m-0 w-full !important;
+    display: block;
+    overflow-x: auto;
+}
+
+figure.highlight td {
+    @apply border-0 p-0 !important;
+}
+
+figure.highlight .gutter {
+    @apply bg-gray-200 border-r border-black text-right px-3 py-2 text-gray-500 select-none w-10 !important;
+}
+
+figure.highlight .code {
+    @apply px-4 py-2 bg-gray-50 overflow-x-auto !important;
+}
+
+figure.highlight pre {
+    @apply font-mono text-sm leading-relaxed m-0 bg-transparent border-0 text-black !important;
+}
+
+/* Code Header */
+.code-header {
+    @apply flex justify-between items-center px-4 py-2 bg-black text-white text-xs font-mono font-bold uppercase tracking-widest border-b border-black select-none;
+}
+
+/* PJAX Loading Bar */
+#nprogress .bar {
+  background: #000 !important;
+  height: 3px !important;
+}
+
+/* Artalk Customization for Lofi Theme */
+.artalk {
+  --at-color-main: #000000 !important;
+  --at-color-font: #000000 !important;
+  --at-color-bg: #ffffff !important;
+  --at-color-grey: #9ca3af !important;
+  --at-color-border: #000000 !important;
+  --at-border-radius: 0 !important;
+}
+
+.atk-main-editor, .atk-list-body {
+    border-radius: 0 !important;
+}
+
+.atk-send-btn, .atk-badge {
+    border-radius: 0 !important;
+    background: #000 !important;
+    color: #fff !important;
+}
+
+.atk-comment .atk-avatar img {
+    border-radius: 0 !important;
+    border: 1px solid #000 !important;
+}
