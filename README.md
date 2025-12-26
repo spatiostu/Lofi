@@ -63,6 +63,21 @@ menu:
   友链: /friends
   关于: /about
 ```
+需在source目录下创建两个页面文档：`about/index.md`、`friends/index.md`。每个文档的内容可以自定义，例如：
+
+```markdown
+---
+title: 友情链接
+date: 2024-03-20 12:00:00
+type: friends
+
+---
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<a href="https://www.FriendDomain.com/" target="_blank" class="friend-card">
+    <div class="font-bold text-lg mb-2">FriendName</div>
+    <div class="text-xs font-mono opacity-60">FriendDescription</div>
+</a>
+```
 
 ### 2. 个人信息 (Profile)
 设置你的头像和社交媒体链接。
