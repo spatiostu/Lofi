@@ -1,6 +1,7 @@
 # Hexo Theme Lofi
 
 > 极简、纯粹、黑白风格的 Hexo 博客主题。
+
 > A minimalist, black & white theme for Hexo.
 
 ![](https://s2.loli.net/2025/12/27/xN7iMnbRPJdT6pQ.png)
