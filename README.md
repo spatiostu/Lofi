@@ -103,7 +103,9 @@ cdn:
   enable: true
   url: https://res.your-domain.com/
 ```
+
 如不需要 CDN 加速，将 `enable` 改为 `false` 即可。
+
 ---
 
 ## 开源协议 (License)
