@@ -44,7 +44,7 @@ theme: lofi
 为了让主题的搜索和渲染功能正常工作，你需要安装几个小插件。在博客根目录下运行：
 
 ```bash
-npm install hexo-renderer-ejs hexo-generator-search --save
+npm install hexo-renderer-ejs hexo-generator-searchdb --save
 ```
 
 ---
