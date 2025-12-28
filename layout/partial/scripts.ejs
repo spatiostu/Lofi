@@ -14,8 +14,20 @@
 
 <!-- Artalk (Comment System) -->
 <% if (theme.artalk && theme.artalk.enable) { %>
-    <link href="<%- theme.artalk.css_url || url_for('css/Artalk.css') %>" rel="stylesheet" />
-    <script src="<%- theme.artalk.js_url || url_for('js/Artalk.js') %>"></script>
+    <% 
+        var artalkCss = theme.artalk.css_url;
+        var artalkJs = theme.artalk.js_url;
+        
+        if (!artalkCss) {
+            artalkCss = (theme.cdn && theme.cdn.enable) ? theme.cdn.url + 'css/Artalk.css' : url_for('css/Artalk.css');
+        }
+        
+        if (!artalkJs) {
+            artalkJs = (theme.cdn && theme.cdn.enable) ? theme.cdn.url + 'js/Artalk.js' : url_for('js/Artalk.js');
+        }
+    %>
+    <link href="<%- artalkCss %>" rel="stylesheet" />
+    <script src="<%- artalkJs %>"></script>
 <% } %>
 
 <% if (is_post() && theme.artalk && theme.artalk.enable) { %>
