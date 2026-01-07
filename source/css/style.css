@@ -4364,13 +4364,35 @@ figure.highlight pre {
 }
 
 /* Artalk Customization for Lofi Theme */
-.artalk {
+.artalk, .atk-layer-wrap {
   --at-color-main: #000000 !important;
   --at-color-font: #000000 !important;
+  --at-color-deep: #000000 !important;
+  --at-color-sub: #6b7280 !important;
+  --at-color-meta: #6b7280 !important;
   --at-color-bg: #ffffff !important;
+  --at-color-bg-transl: rgba(255, 255, 255, 0.94) !important;
+  --at-color-bg-grey: #f3f4f5 !important;
+  --at-color-bg-grey-transl: rgba(244, 244, 244, 0.75) !important;
+  --at-color-bg-light: rgba(0, 0, 0, 0.06) !important;
   --at-color-grey: #9ca3af !important;
+  --at-color-light: #111827 !important;
   --at-color-border: #000000 !important;
   --at-border-radius: 0 !important;
+}
+
+.artalk .atk-meta,
+.artalk .atk-meta a,
+.artalk .atk-actions,
+.artalk .atk-actions a,
+.artalk .atk-actions button,
+.artalk .atk-common-action-btn {
+  color: var(--at-color-meta) !important;
+}
+
+.artalk .atk-content code:not(pre > code) {
+  background-color: var(--at-color-bg-grey) !important;
+  color: var(--at-color-font) !important;
 }
 
 .atk-main-editor, .atk-list-body {
