@@ -1,12 +1,132 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title><%= page.title ? page.title + ' | ' + config.title : config.title %></title>
+<%
+  var isPost = (typeof is_post === 'function' && is_post()) || page.layout === 'post';
+  var siteTitle = config.title || '';
+  var pageTitle = page.title ? page.title + ' | ' + siteTitle : siteTitle;
+
+  var baseUrl = String(config.url || '').replace(/\/$/, '');
+  var canonicalUrl = page.permalink || (baseUrl ? baseUrl + url_for(page.path) : url_for(page.path));
+
+  function normalizeText(input) {
+    return String(input || '').replace(/\s+/g, ' ').trim();
+  }
+
+  function stripHtmlLocal(input) {
+    return String(input || '').replace(/<[^>]*>/g, '');
+  }
+
+  function buildDescription() {
+    if (page.description) return page.description;
+    if (isPost && page.excerpt) return stripHtmlLocal(page.excerpt);
+    if (page.excerpt) return stripHtmlLocal(page.excerpt);
+    if (isPost && page.content) return stripHtmlLocal(page.content);
+    return config.description || '';
+  }
+
+  var metaDescription = normalizeText(buildDescription());
+  if (metaDescription.length > 200) metaDescription = metaDescription.substring(0, 200);
+
+  function splitKeywords(input) {
+    return String(input || '')
+      .split(',')
+      .map(function (s) { return s.trim(); })
+      .filter(Boolean);
+  }
+
+  var keywordList = [];
+  if (isPost && page.tags && typeof page.tags.forEach === 'function') {
+    page.tags.forEach(function (tag) {
+      if (tag && tag.name) keywordList.push(String(tag.name).trim());
+    });
+  }
+  if (!keywordList.length) keywordList = splitKeywords(config.keywords || theme.keywords);
+  var metaKeywords = keywordList.filter(Boolean).join(', ');
+
+  function toAbsoluteUrl(path) {
+    var p = String(path || '').trim();
+    if (!p) return '';
+    if (/^https?:\/\//i.test(p)) return p;
+    var resolved = url_for(p);
+    if (!baseUrl) return resolved;
+    return baseUrl + resolved;
+  }
+
+  var pageImage = toAbsoluteUrl(page.cover || page.thumbnail || page.banner || page.image || theme.avatar);
+  var ogType = isPost ? 'article' : 'website';
+  var twitterCard = pageImage ? 'summary_large_image' : 'summary';
+
+  var articlePublished = isPost && page.date ? date(page.date, 'YYYY-MM-DDTHH:mm:ssZ') : '';
+  var articleModified = isPost && page.updated ? date(page.updated, 'YYYY-MM-DDTHH:mm:ssZ') : '';
+
+  var schema = null;
+  if (isPost) {
+    schema = {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: page.title || siteTitle,
+      description: metaDescription || undefined,
+      image: pageImage ? [pageImage] : undefined,
+      datePublished: articlePublished || undefined,
+      dateModified: articleModified || undefined,
+      author: config.author ? { '@type': 'Person', name: config.author } : undefined,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl }
+    };
+  } else {
+    schema = {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: siteTitle,
+      url: baseUrl || undefined
+    };
+  }
+%>
+<title><%= pageTitle %></title>
 <% if (theme.favicon) { %>
 <link rel="icon" href="<%= theme.favicon %>">
 <% } %>
 <meta name="author" content="<%= config.author %>">
-<meta name="description" content="<%= config.description %>">
-<meta name="keywords" content="<%= config.keywords %>">
+<meta id="meta-description" name="description" content="<%= metaDescription %>">
+<% if (metaKeywords) { %>
+<meta id="meta-keywords" name="keywords" content="<%= metaKeywords %>">
+<% } %>
+
+<link id="canonical-link" rel="canonical" href="<%= canonicalUrl %>">
+<link id="feed-link" rel="alternate" href="<%- url_for('/feed/') %>" title="<%= siteTitle %>" type="application/atom+xml">
+
+<meta id="og-title" property="og:title" content="<%= page.title || siteTitle %>">
+<meta id="og-description" property="og:description" content="<%= metaDescription %>">
+<meta id="og-type" property="og:type" content="<%= ogType %>">
+<meta id="og-url" property="og:url" content="<%= canonicalUrl %>">
+<meta id="og-site-name" property="og:site_name" content="<%= siteTitle %>">
+<% if (pageImage) { %>
+<meta id="og-image" property="og:image" content="<%= pageImage %>">
+<% } %>
+
+<% if (isPost && articlePublished) { %>
+<meta id="article-published-time" property="article:published_time" content="<%= articlePublished %>">
+<% } %>
+<% if (isPost && articleModified) { %>
+<meta id="article-modified-time" property="article:modified_time" content="<%= articleModified %>">
+<% } %>
+<% if (isPost && page.tags && typeof page.tags.forEach === 'function') { %>
+  <% page.tags.forEach(function (tag) { %>
+    <% if (tag && tag.name) { %>
+<meta property="article:tag" content="<%= String(tag.name).trim() %>">
+    <% } %>
+  <% }) %>
+<% } %>
+
+<meta id="twitter-card" name="twitter:card" content="<%= twitterCard %>">
+<meta id="twitter-title" name="twitter:title" content="<%= page.title || siteTitle %>">
+<meta id="twitter-description" name="twitter:description" content="<%= metaDescription %>">
+<% if (pageImage) { %>
+<meta id="twitter-image" name="twitter:image" content="<%= pageImage %>">
+<% } %>
+
+<% if (schema) { %>
+<script id="schema-org" type="application/ld+json"><%- JSON.stringify(schema) %></script>
+<% } %>
 
 <!-- CSS -->
 <% if (theme.cdn && theme.cdn.enable) { %>
