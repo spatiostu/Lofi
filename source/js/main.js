@@ -2,7 +2,7 @@
 document.addEventListener("DOMContentLoaded", function() {
   var pjax = new Pjax({
     elements: "a[href]:not([target='_blank'])",
-    selectors: ["#main-container", "title", "#meta-description", "#meta-keywords", "#canonical-link", "#feed-link", "#og-title", "#og-description", "#og-type", "#og-url", "#og-site-name", "#og-image", "#article-published-time", "#article-modified-time", "#twitter-card", "#twitter-title", "#twitter-description", "#twitter-image", "#schema-org"],
+    selectors: ["#main-container", "title", "#meta-description", "#meta-keywords", "#canonical-link", "#feed-link", "#og-title", "#og-description", "#og-type", "#og-url", "#og-site-name", "#og-image", "#article-published-time", "#article-modified-time", "#twitter-card", "#twitter-title", "#twitter-description", "#twitter-image"],
     cacheBust: false
   });
 
